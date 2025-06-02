@@ -77,7 +77,26 @@ class DataTransformation:
             logger.info("Applying SMOTE for class imbalance")
             smote = SMOTE(random_state = 42)
             X_train_balanced, y_train_balanced = smote.fit_resample(X_train_scaled,y_train)
+            
+            logger.info("preparing unscaled data for tree models")
+            num_imputer = SimpleImputer(strategy= 'median')
+            cat_imputer = SimpleImputer(strategy= 'most_frequent')
+            X_train_unscaled = X_train.copy()
+            X_test_unscaled = X_test.copy()
 
+            X_train_unscaled[numerical_columns] = num_imputer.fit_transform(X_train_unscaled[numerical_columns])
+            X_train_unscaled[categorical_columns] = cat_imputer.fit_transform(X_train_unscaled[categorical_columns])
+            X_test_unscaled[numerical_columns] = num_imputer.fit_transform(X_test_unscaled[numerical_columns])
+            X_test_unscaled[categorical_columns] = cat_imputer.fit_transform(X_test_unscaled[categorical_columns])
+
+            # converting categorical to one hot encoding
+            encoder = OneHotEncoder(handle_unknown='ignore', sparse= False)
+            X_train_unscaled_cat = encoder.fit_transform(X_train_unscaled[categorical_columns])
+            X_test_unscaled_cat = encoder.fit_transform(X_test_unscaled[categorical_columns])
+
+            X_train_unscaled_final = np.hstack((X_train_unscaled[numerical_columns].values, X_test_unscaled_cat))
+            X_test_unscaled_final = np.hstack((X_test_unscaled[numerical_columns].values, X_test_unscaled_cat))
+            
             # save the preprocessor object
             save_object(self.data_transformation_config.preprocessor_obj_file_path, preprocessor)
             logger.info("Preprocessor saved")
@@ -85,6 +104,8 @@ class DataTransformation:
             return (
                 np.c_[X_train_balanced, y_train_balanced],
                 np.c_[X_test_scaled, y_test],
+                np.c_[X_train_unscaled_final, y_train_balanced],
+                np.c_[X_test_unscaled_final, y_test.values],
                 self.data_transformation_config.preprocessor_obj_file_path
             )
         except Exception as e:
