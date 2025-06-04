@@ -10,10 +10,14 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import GridSearchCV
 
 from src.exception import CustomException
 from src.logger import logger
-from utils import save_object
+from src.utils import save_object
+import warnings 
+warnings.filterwarnings('ignore')
+
 
 @dataclass 
 class ModelTrianerConfig:
@@ -39,7 +43,7 @@ class ModelTrainer:
             tree_models = {
                 'Random Forest': RandomForestClassifier(),
                 'CatBoost' : CatBoostClassifier(verbose = 0),
-                'XGBoost' : XGBClassifier(use_label_encoder = False, eval_metric = 'logloss')
+                'XGBoost' : XGBClassifier(eval_metric = 'logloss')
             }
 
             non_tree_models = {
@@ -50,26 +54,63 @@ class ModelTrainer:
             all_models = {**tree_models, **non_tree_models}
             model_scores = {}
 
+            # param Grids
+            param_grids = {
+                'Random Forest': {
+                    'n_estimators': [100, 200],
+                    'max_depth' : [None, 10, 20]
+                },
+                'CatBoost' : {
+                    'depth' : [6,8],
+                    'learning_rate' : [0.01, 0.1]
+                },
+                'XGBoost' : {
+                    'n_estimators' : [100, 200, 300],
+                    'max_depth' : [4, 6, 7],
+                    'learning_rate' : [0.05, 0.1],
+                    'subsample': [0.8, 1.0],
+                    'colsample_bytree' : [0.6, 0.8]
+                },
+                'Logistic Regression' : {
+                    'C' : [0.1, 1.0, 10],
+                    'solver' : ['liblinear']
+                },
+                'K-Nearest Neighbors' : {
+                    'n_neighbors' : [3,5,7],
+                    'weights': ['uniform', 'distance']
+                }
+            }
+
+            best_model = None
+            best_score = 0
+            best_model_name = ""
+            
+            for model_name, model in all_models.items():
+                logger.info(f"Tuning {model_name} model")
             # Fit tree based models on unscaled data 
-            for model_name, model in tree_models.items():
-                model.fit(X_train_unscaled, y_train_unscaled)
-                preds = model.predict(X_test_unscaled)
-                acc = accuracy_score(y_test_unscaled, preds)
-                model_scores[model_name] = acc
+                if model_name in tree_models:
+                    X_train, y_train = X_train_unscaled, y_train_unscaled
+                    X_test, y_test = X_test_unscaled, y_test_unscaled
+                else:
+                    X_train, y_train = X_train_scaled, y_train_scaled
+                    X_test, y_test = X_test_scaled, y_test_scaled
+                
+                grid = GridSearchCV(model, param_grids[model_name], cv=5, scoring='accuracy', n_jobs=-1)
+                grid.fit(X_train, y_train)
 
-            # Fit non-tree-based models on scaled data 
-            for model_name, model in non_tree_models.items():
-                model.fit(X_train_scaled,y_train_scaled)
-                preds = model.predict(X_test_scaled)
-                acc = accuracy_score(y_test_scaled, preds)
-                model_scores[model_name] = acc
-            # pick the best model
-            best_model_name = max(model_scores, key = model_scores.get)
-            best_model = all_models[best_model_name]
-            best_score = model_scores[best_model_name]
+                preds = grid.best_estimator_.predict(X_test)
+                acc = accuracy_score(y_test, preds)
 
-            if best_score < 0.6:
+                logger.info(f"{model_name} best score: {acc} | Best Params: {grid.best_params_}")
+
+                if acc > best_score:
+                    best_score = acc
+                    best_model = grid.best_estimator_
+                    best_model_name = model_name
+
+            if best_score < 0.6 or best_model is None:
                 raise CustomException("No suitable classification model found with accuracy > 0.6 ")
+            
             logger.info(f"Best Model: {best_model_name} with Accuracy Score: {best_score}")
             save_object(self.model_trainer_config.trained_model_file_path, best_model)
 

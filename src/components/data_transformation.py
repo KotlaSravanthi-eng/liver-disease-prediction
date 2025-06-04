@@ -35,7 +35,7 @@ class DataTransformation:
             cat_pipeline = Pipeline(
                 steps= [
                     ("imputer", SimpleImputer(strategy="most_frequent")),
-                    ("onehot", OneHotEncoder(handle_unknown="ignore", sparse=False))
+                    ("onehot", OneHotEncoder(handle_unknown="ignore"))
                 ]
             )
 
@@ -58,11 +58,14 @@ class DataTransformation:
             target_column = "Dataset"
             numerical_columns = ['Age', 'Total_Bilirubin', 'Direct_Bilirubin', 'Alkaline_Phosphotase',
                                  'Alamine_Aminotransferase','Aspartate_Aminotransferase',
-                                 'Total_Proteins', 'Albumin', 'Albumin_and_Globulin_Ratio']
+                                 'Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio']
             
             categorical_columns = ['Gender']
 
-            preprocessor = self.get_data_transformer_object(numerical_columns, categorical_columns)
+            train_df[target_column] = train_df[target_column].map({1:0, 2:1})
+            test_df[target_column] = test_df[target_column].map({1:0, 2:1})
+            
+            preprocessor = self.get_data_transformation_object(numerical_columns, categorical_columns)
 
             # separate input and target 
             X_train = train_df.drop(columns = [target_column])
@@ -90,11 +93,12 @@ class DataTransformation:
             X_test_unscaled[categorical_columns] = cat_imputer.fit_transform(X_test_unscaled[categorical_columns])
 
             # converting categorical to one hot encoding
-            encoder = OneHotEncoder(handle_unknown='ignore', sparse= False)
-            X_train_unscaled_cat = encoder.fit_transform(X_train_unscaled[categorical_columns])
-            X_test_unscaled_cat = encoder.fit_transform(X_test_unscaled[categorical_columns])
+            encoder = OneHotEncoder(handle_unknown='ignore')
+            X_train_unscaled_cat = encoder.fit_transform(X_train_unscaled[categorical_columns]).toarray()
+            X_test_unscaled_cat = encoder.fit_transform(X_test_unscaled[categorical_columns]).toarray()
 
-            X_train_unscaled_final = np.hstack((X_train_unscaled[numerical_columns].values, X_test_unscaled_cat))
+            X_train_unscaled_final = np.hstack((X_train_unscaled[numerical_columns].values, X_train_unscaled_cat))
+            X_train_unscaled_final, _ = smote.fit_resample(X_train_unscaled_final, y_train)
             X_test_unscaled_final = np.hstack((X_test_unscaled[numerical_columns].values, X_test_unscaled_cat))
             
             # save the preprocessor object
