@@ -52,7 +52,6 @@ class ModelTrainer:
             }
 
             all_models = {**tree_models, **non_tree_models}
-            model_scores = {}
 
             # param Grids
             param_grids = {

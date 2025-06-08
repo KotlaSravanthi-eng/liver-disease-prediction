@@ -7,4 +7,5 @@ seaborn
 xgboost
 catboost
 imbalanced
--e .
+
+#-e .
