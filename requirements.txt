@@ -6,6 +6,7 @@ matplotlib
 seaborn
 xgboost
 catboost
-imbalanced
+imbalanced-learn
+dill 
 
 #-e .

@@ -36,7 +36,7 @@ class CustomData:
                   alkphos : float,
                   alamine: float,
                   aspartate : float,
-                  total_proteins : float, 
+                  total_protiens : float, 
                   albumin : float,
                   ag_ratio : float
                  ):
@@ -47,7 +47,7 @@ class CustomData:
         self.alkphos = alkphos
         self.alamine = alamine
         self.aspartate = aspartate 
-        self.total_proteins = total_proteins
+        self.total_protiens = total_protiens
         self.albumin = albumin
         self.ag_ratio = ag_ratio
     def get_data_as_data_frame(self):
@@ -59,8 +59,8 @@ class CustomData:
                 'Direct_Bilirubin' : [self.direct_bilirubin],
                 'Alkaline_Phosphotase' : [self.alkphos],
                 'Alamine_Aminotransferase' : [self.alamine],
-                'Aspartate_Aminotrasferase' : [self.aspartate],
-                'Total_Proteins' : [self.total_proteins],
+                'Aspartate_Aminotransferase' : [self.aspartate],
+                'Total_Protiens' : [self.total_protiens],
                 'Albumin' : [self.albumin],
                 'Albumin_and_Globulin_Ratio' : [self.ag_ratio]
             }
