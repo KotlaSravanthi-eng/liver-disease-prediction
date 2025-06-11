@@ -17,8 +17,13 @@ After testing several models like XGBoost and CatBoost, KNN gave the best result
 ## 🔍 Live Demo
 Try the app here: [Liver Disease Predictor Demo](https://huggingface.co/spaces/kotlasravanthi/Liver-Disease-Predictor)
 
-## 🖼️ App Preview
-![App Screenshot](screenshot.png)
+## 🖼️ App Preview (Input + Result)
+
+<p float="left">
+  <img src="screenshots/demo(1).png" width="45%" />
+  <img src="screenshots/demo(2).png" width="45%" />
+</p>
+
 -------
 
 ## 🧪 Sample Prediction
