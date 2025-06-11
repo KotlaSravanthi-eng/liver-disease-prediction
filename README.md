@@ -36,7 +36,7 @@ Try the app here: [Liver Disease Predictor Demo](https://huggingface.co/spaces/k
 - Albumin and Globulin Ratio: 1.0  
 
 **Output:**  
-🟥 Likely Liver Disease (Prediction: 1)
+🟢 No Liver Disease (Prediction: 2)
 
 ---
 
@@ -47,7 +47,8 @@ Try the app here: [Liver Disease Predictor Demo](https://huggingface.co/spaces/k
   - Label Encoding for categorical column (used in EDA stage) 
 - Handled class imbalance using `SMOTE` from `imbalanced-learn`
 - Accuracy: 85%  
-- Dataset: UCI Indian Liver Patient Dataset
+- Dataset: [ILPD Indian Liver Patient Dataset](https://archive.ics.uci.edu/dataset/225/ilpd+indian+liver+patient+dataset)
+
 
 ## 🛠️ Tech Stack
 - Python  
@@ -59,9 +60,11 @@ Try the app here: [Liver Disease Predictor Demo](https://huggingface.co/spaces/k
 - Gradio (for UI)  
 - Hugging Face Spaces (for deployment)
 
+
 ## 📁 Project Structure
 ├── artifacts/
 |   ├── model_trainer.pkl # Trained ML model
+|   └── preprocessor.pkl # preprocessed ML model
 ├── notebook/
 |   ├── data/
 |   |   ├── indian_liver_patient.csv 
@@ -92,5 +95,5 @@ pip install -r requirements.txt
 
 🤝 Contact
 Created by Sravanthi Kotla
-GitHub | LinkedIn
+GitHub | https://github.com/KotlaSravanthi-eng
 
