@@ -4,8 +4,8 @@ from src.pipelines.predict_pipeline import CustomData, PredictPipeline
 from src.utils import load_object
 
 # load the trained model
-model = load_object('artifacts/model_trainer.pkl')
-preprocessor = load_object('artifacts/preprocessor.pkl')
+# model = load_object('artifacts/model_trainer.pkl')
+# preprocessor = load_object('artifacts/preprocessor.pkl')
 
 # Define prediction function 
 def predict_liver_disease(age, gender, total_bilirubin, direct_bilirubin, alk_phosphate, alamine, aspartate, total_protiens, albumin, ag_ratio):
@@ -49,7 +49,7 @@ with gr.Blocks(title = "Liver Disease Predictor", theme = gr.themes.Soft()) as i
             ag_ratio = gr.Number(label="Albumin Globulin Ratio", value=1.0, minimum=0.0, maximum=3.0, step=0.1)
         
         with gr.Column():
-            result = gr.Textbox(label = "Prediction Result")
+            result = gr.Textbox(label = "Prediction Result", interactive=False)
             submit_btn = gr.Button("🔎 Predict Now")
     submit_btn.click(
         fn = predict_liver_disease,

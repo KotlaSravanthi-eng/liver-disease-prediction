@@ -11,17 +11,12 @@ class PredictPipeline:
     def predict(self, features : pd.DataFrame):
         try:
             model_path = 'artifacts/model_trainer.pkl'
-            preprocessor_path = 'artifacts/preprocessor.pkl'
 
             # load model and preprocessing pipeline
             model = load_object(file_path= model_path)
-            preprocessor = load_object(file_path= preprocessor_path)
-
-            # Preprocess incoming features
-            data_scaled = preprocessor.transform(features)
 
             # predict 
-            preds = model.predict(data_scaled)
+            preds = model.predict(features)
 
             return preds
         except Exception as e:

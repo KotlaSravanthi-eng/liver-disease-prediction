@@ -17,12 +17,10 @@ After testing several models like XGBoost and CatBoost, KNN gave the best result
 ## 🔍 Live Demo
 Try the app here: [Liver Disease Predictor Demo](https://huggingface.co/spaces/kotlasravanthi/Liver-Disease-Predictor)
 
-## 🖼️ App Preview (Input + Result)
+## 🎥 Demo
 
-<p float="left">
-  <img src="screenshots/demo(1).png" width="45%" />
-  <img src="screenshots/demo(2).png" width="45%" />
-</p>
+![Liver Disease Predictor Demo](C:\Users\Admin\OneDrive\Desktop\liver-disease-prediction\demo\live_demo_sample.gif)
+
 
 -------
 
@@ -51,9 +49,14 @@ Try the app here: [Liver Disease Predictor Demo](https://huggingface.co/spaces/k
   - PowerTransformer for numerical features (in model pipeline)
   - Label Encoding for categorical column (used in EDA stage) 
 - Handled class imbalance using `SMOTE` from `imbalanced-learn`
-- Accuracy: 85%  
+- F1 score: 85%  
 - Dataset: [ILPD Indian Liver Patient Dataset](https://archive.ics.uci.edu/dataset/225/ilpd+indian+liver+patient+dataset)
 
+## 📉 Confusion Matrix & ROC Curve
+<p float="left"> 
+<img src="C:\Users\Admin\OneDrive\Desktop\liver-disease-prediction\artifacts\confusion_matrix_K-Nearest_Neighbors.png" width="45%" /> 
+<img src="C:\Users\Admin\OneDrive\Desktop\liver-disease-prediction\artifacts\roc_curve.png" width="45%" /> 
+</p>
 
 ## 🛠️ Tech Stack
 - Python  

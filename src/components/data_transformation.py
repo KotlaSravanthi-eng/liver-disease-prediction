@@ -65,6 +65,7 @@ class DataTransformation:
             train_df[target_column] = train_df[target_column].map({1:0, 2:1})
             test_df[target_column] = test_df[target_column].map({1:0, 2:1})
             
+            # ==================== Scaled pipeline (non-tree based models) =========================== #
             preprocessor = self.get_data_transformation_object(numerical_columns, categorical_columns)
 
             # separate input and target 
@@ -77,40 +78,44 @@ class DataTransformation:
             X_train_scaled = preprocessor.fit_transform(X_train)
             X_test_scaled = preprocessor.transform(X_test)
 
-            logger.info("Applying SMOTE for class imbalance")
+            logger.info("Applying SMOTE for scaled data class imbalance")
             smote = SMOTE(random_state = 42)
-            X_train_balanced, y_train_balanced = smote.fit_resample(X_train_scaled,y_train)
-            
+            X_train_scaled_bal, y_train_scaled_bal = smote.fit_resample(X_train_scaled,y_train)
+
+            # =================== Unscaled pipeline (tree based model) ==================================#
             logger.info("preparing unscaled data for tree models")
             num_imputer = SimpleImputer(strategy= 'median')
             cat_imputer = SimpleImputer(strategy= 'most_frequent')
+            
             X_train_unscaled = X_train.copy()
             X_test_unscaled = X_test.copy()
 
             X_train_unscaled[numerical_columns] = num_imputer.fit_transform(X_train_unscaled[numerical_columns])
             X_train_unscaled[categorical_columns] = cat_imputer.fit_transform(X_train_unscaled[categorical_columns])
-            X_test_unscaled[numerical_columns] = num_imputer.fit_transform(X_test_unscaled[numerical_columns])
-            X_test_unscaled[categorical_columns] = cat_imputer.fit_transform(X_test_unscaled[categorical_columns])
+            X_test_unscaled[numerical_columns] = num_imputer.transform(X_test_unscaled[numerical_columns])
+            X_test_unscaled[categorical_columns] = cat_imputer.transform(X_test_unscaled[categorical_columns])
 
             # converting categorical to one hot encoding
             encoder = OneHotEncoder(handle_unknown='ignore')
             X_train_unscaled_cat = encoder.fit_transform(X_train_unscaled[categorical_columns]).toarray()
-            X_test_unscaled_cat = encoder.fit_transform(X_test_unscaled[categorical_columns]).toarray()
+            X_test_unscaled_cat = encoder.transform(X_test_unscaled[categorical_columns]).toarray()
 
             X_train_unscaled_final = np.hstack((X_train_unscaled[numerical_columns].values, X_train_unscaled_cat))
-            X_train_unscaled_final, _ = smote.fit_resample(X_train_unscaled_final, y_train)
             X_test_unscaled_final = np.hstack((X_test_unscaled[numerical_columns].values, X_test_unscaled_cat))
             
+            logger.info("Applying SMOTE to unscaled data")
+            X_train_unscaled_final, y_train_unscaled_bal = smote.fit_resample(X_train_unscaled_final, y_train)
+
             # save the preprocessor object
             save_object(self.data_transformation_config.preprocessor_obj_file_path, preprocessor)
             logger.info("Preprocessor saved")
 
             return (
-                np.c_[X_train_balanced, y_train_balanced],
+                np.c_[X_train_scaled_bal, y_train_scaled_bal],
                 np.c_[X_test_scaled, y_test],
-                np.c_[X_train_unscaled_final, y_train_balanced],
+                np.c_[X_train_unscaled_final, y_train_unscaled_bal],
                 np.c_[X_test_unscaled_final, y_test.values],
-                self.data_transformation_config.preprocessor_obj_file_path
+                preprocessor
             )
         except Exception as e:
             raise CustomException(e, sys)
