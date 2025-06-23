@@ -115,7 +115,7 @@ Try the app here: [Liver Disease Predictor Demo](https://huggingface.co/spaces/k
 pip install -r requirements.txt
 
 
-🤝 Contact
-Created by Sravanthi Kotla
-GitHub | https://github.com/KotlaSravanthi-eng
-
+## 🤝 Contact
+Created by **Sravanthi Kotla**  
+📧 Email: [kotlasravanthi@gmail.com](mailto:kotlasravanthi229@gmail.com)  
+🔗 GitHub: [KotlaSravanthi-eng](https://github.com/KotlaSravanthi-eng)
