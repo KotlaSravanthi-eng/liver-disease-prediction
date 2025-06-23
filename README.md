@@ -4,9 +4,21 @@
 This project predicts the likelihood of liver disease based on medical diagnostic features using machine learning models.  
 Built with Python, scikit-learn, and K-Nearest Neighbors, and deployed as an interactive web app using Gradio on Hugging Face Spaces.
 
-After testing several models like XGBoost and CatBoost, KNN gave the best results.
+After testing several models like XGBoost and CatBoost, KNN consistently gave the best F1 score (90%) with lowest false negatives, which is essential in medical diagnosis. Therefore, it was selected as the final model.
 
 --------------------
+
+### 🔍 Final Model Selection Justification
+
+After evaluating multiple models with hyperparameter tuning on both scaled and unscaled pipelines, the **K-Nearest Neighbors (KNN)** model consistently achieved the highest performance:
+
+- **F1 Score (Macro):** 0.90
+- **Recall for Liver Disease (Class 0):** 91%
+- **ROC AUC Score:** 0.82
+- **Low False Negatives:** 7 (critical in healthcare domain)
+
+Due to these strengths, **KNN was selected** as the final model for deployment in the liver disease prediction system.
+
 
 ## 💡 Features
 - Input features include Age, Total Bilirubin, Albumin, and other liver-related medical parameters  
@@ -49,13 +61,15 @@ Try the app here: [Liver Disease Predictor Demo](https://huggingface.co/spaces/k
   - PowerTransformer for numerical features (in model pipeline)
   - Label Encoding for categorical column (used in EDA stage) 
 - Handled class imbalance using `SMOTE` from `imbalanced-learn`
-- F1 score: 85%  
+- F1 score: 90%  
 - Dataset: [ILPD Indian Liver Patient Dataset](https://archive.ics.uci.edu/dataset/225/ilpd+indian+liver+patient+dataset)
+
+
 
 ## 📉 Confusion Matrix & ROC Curve
 <p float="left"> 
-<img src="artifacts\confusion_matrix_K-Nearest_Neighbors.png" width="45%" /> 
-<img src="artifacts\roc_curve.png" width="45%" /> 
+<img src="artifacts/confusion_matrix_K-Nearest_Neighbors.png" width="45%" /> 
+<img src="artifacts/roc_curve.png" width="45%" /> 
 </p>
 
 ## 🛠️ Tech Stack
@@ -97,7 +111,7 @@ Try the app here: [Liver Disease Predictor Demo](https://huggingface.co/spaces/k
 ## 🧠 How to Run Locally
 1. Clone the repo  
 2. Install dependencies:
-```bash
+```bash```
 pip install -r requirements.txt
 
 
