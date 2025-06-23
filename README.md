@@ -19,7 +19,7 @@ Try the app here: [Liver Disease Predictor Demo](https://huggingface.co/spaces/k
 
 ## 🎥 Demo
 
-![Liver Disease Predictor Demo](demo\live_demo_sample.gif)
+![Liver Disease Predictor Demo](demo/live_demo_sample.gif)
 
 
 -------
