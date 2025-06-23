@@ -19,7 +19,7 @@ Try the app here: [Liver Disease Predictor Demo](https://huggingface.co/spaces/k
 
 ## 🎥 Demo
 
-![Liver Disease Predictor Demo](C:\Users\Admin\OneDrive\Desktop\liver-disease-prediction\demo\live_demo_sample.gif)
+![Liver Disease Predictor Demo](demo\live_demo_sample.gif)
 
 
 -------
@@ -54,8 +54,8 @@ Try the app here: [Liver Disease Predictor Demo](https://huggingface.co/spaces/k
 
 ## 📉 Confusion Matrix & ROC Curve
 <p float="left"> 
-<img src="C:\Users\Admin\OneDrive\Desktop\liver-disease-prediction\artifacts\confusion_matrix_K-Nearest_Neighbors.png" width="45%" /> 
-<img src="C:\Users\Admin\OneDrive\Desktop\liver-disease-prediction\artifacts\roc_curve.png" width="45%" /> 
+<img src="artifacts\confusion_matrix_K-Nearest_Neighbors.png" width="45%" /> 
+<img src="artifacts\roc_curve.png" width="45%" /> 
 </p>
 
 ## 🛠️ Tech Stack
