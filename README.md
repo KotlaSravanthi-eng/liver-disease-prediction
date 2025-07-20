@@ -84,6 +84,7 @@ Try the app here: [Liver Disease Predictor Demo](https://huggingface.co/spaces/k
 
 
 ## 📁 Project Structure
+<pre> ```
 ├── artifacts/
 |   ├── model_trainer.pkl # Trained ML model
 |   └── preprocessor.pkl # preprocessed ML model
@@ -106,7 +107,7 @@ Try the app here: [Liver Disease Predictor Demo](https://huggingface.co/spaces/k
 ├── requirements.txt # Required Python packages
 ├── app.py # app file
 └── README.md # Project documentation
-
+``` </pre>
 
 ## 🧠 How to Run Locally
 1. Clone the repo  
