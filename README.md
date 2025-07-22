@@ -118,5 +118,6 @@ pip install -r requirements.txt
 
 ## 🤝 Contact
 Created by **Sravanthi Kotla**  
-📧 Email: [kotlasravanthi229@gmail.com](mailto:kotlasravanthi229@gmail.com)  
-🔗 GitHub: [KotlaSravanthi-eng](https://github.com/KotlaSravanthi-eng)
+📧 **Email:** [kotlasravanthi229@gmail.com](mailto:kotlasravanthi229@gmail.com) 
+💼 **LinkedIn:** [sravanthi-kotla](https://www.linkedin.com/in/sravanthi-kotla-a153a7260/)
+🔗 **GitHub:** [KotlaSravanthi-eng](https://github.com/KotlaSravanthi-eng)
